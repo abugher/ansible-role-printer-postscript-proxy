@@ -1,0 +1,6 @@
+---
+dependencies:
+  - role:       'user_identity_client'
+    when:       skipdeps is not defined
+  - role:       'ssl_identity'
+    when:       skipdeps is not defined

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+
+function main {
+  log "Starting."
+
+  inotifywait \
+    -m \
+    -e CLOSE_WRITE \
+    -r /usr/local/share/print_target \
+    | while read location events file; do 
+      target="${location}${file}"
+      if output=$(lp "${target}" 2>&1); then
+        log "Printed:  ${target}"
+        if output=$(rm "${target}" 2>&1); then
+          log "Removed:  ${target}"
+        else
+          log "ERROR:  Failed to remove:  ${target}"
+          log "ERROR:  rm ${target}"
+          log "${output}"
+        fi
+      else
+        log "ERROR:  Failed to print:  ${target}"
+        log "ERROR:  lp ${target}"
+        log "DEBUG:  $(ls -l ${target})"
+        log "${output}"
+      fi
+      
+    done
+}
+
+
+function log {
+  logger -i "pdfprintd:  ${1}"
+}
+
+
+main

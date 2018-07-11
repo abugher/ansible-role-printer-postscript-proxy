@@ -1,0 +1,50 @@
+---
+install_packages:
+  - 'inotify-tools'
+  - 'printer-driver-cups-pdf'
+  # for automatic discovery, aka browsing
+  - 'avahi-daemon'
+create_files:
+  - owner:              'rachel'
+    group:              'root'
+    mode:               '1777'
+    state:              'directory'
+    path:               '/usr/local/share/print_target'
+template_files:
+  - owner:              'root'
+    group:              'root'
+    mode:               '0644'
+    src:                "templates/cupsd.conf.j2"
+    dest:               '/etc/cups/cupsd.conf'
+install_files:
+  - owner:              'root'
+    group:              'root'
+    mode:               '0644'
+    src:                "{{ role_path }}/files/conf/cups-pdf.conf"
+    dest:               '/etc/cups/cups-pdf.conf'
+  - owner:              'root'
+    group:              'root'
+    mode:               '0755'
+    src:                "{{ role_path }}/files/bin/pdfprint"
+    dest:               '/etc/init.d/pdfprint'
+  - owner:              'root'
+    group:              'root'
+    mode:               '0755'
+    src:                "{{ role_path }}/files/bin/pdfprintd"
+    dest:               '/usr/local/bin/pdfprintd'
+symlinks:
+  - owner:              'root'
+    group:              'root'
+    src:                '/etc/ssl/private/meliora.pem'
+    dest:               '/etc/cups/ssl/meliora.key'
+  - owner:              'root'
+    group:              'root'
+    src:                '/etc/ssl/certs/meliora.pem'
+    dest:               '/etc/cups/ssl/meliora.crt'
+enable_services:
+  - 'pdfprint'
+start_services:
+  - 'pdfprint'
+restart_services:
+  - 'cups'
+  - 'pdfprint'
