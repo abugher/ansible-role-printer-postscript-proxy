@@ -10,6 +10,11 @@ create_files:
     mode:               '1777'
     state:              'directory'
     path:               '/usr/local/share/print_target'
+initialize_files:
+  - owner:              'rachel'
+    group:              'root'
+    mode:               '0644'
+    dest:               '/var/log/printed_last.pdf'
 template_files:
   - owner:              'root'
     group:              'root'
