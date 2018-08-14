@@ -11,28 +11,119 @@
 ### END INIT INFO
 
 
-function ssd {
-  start-stop-daemon \
-    -c rachel \
-    -u rachel \
-    -a /usr/local/bin/pdfprintd \
-    -n pdfprintd \
-    "${@}"
+PIDFILE=/run/pdfprintd.pid
+
+
+function status {
+  pid=$(get_pid)
+  if ps -p $pid > /dev/null; then
+    echo "PID ${pid} is running."
+  else
+    if test "" == "${pid}"; then
+      echo "pdfprintd is not running."
+    else
+      echo "PID ${pid} is recorded, but not running."
+    fi
+  fi
 }
+
+
+function stop {
+  pid=$(get_pid | head -n 1)
+  echo "Killing PID ${pid}."
+  kill $pid
+  for i in {0..9}; do
+    if ! ps -p $pid > /dev/null; then
+      echo "PID ${pid} is dead."
+      break
+    fi
+    case i in
+      0)
+        echo -en "Waiting for PID ${pid} to die..."
+        ;;
+      9)
+        echo "still running!"
+        exit 1
+        ;;
+      *)
+        echo -en "."
+        ;;
+    esac
+  done
+
+  if ps -p $pid > /dev/null; then
+    echo "PID ${pid} is not stopped."
+  else
+    echo "PID ${pid} is stopped."
+  fi
+
+  echo "Killing processes named:  pdfprintd"
+  pkill pdfprintd
+  for i in {0..9}; do
+    if ! pgrep -x pdfprintd > /dev/null; then
+      echo "pdfprintd is dead."
+      break
+    fi
+    case i in
+      0)
+        echo -en "Waiting..."
+        ;;
+      9)
+        echo "pdfprintd is still running!"
+        exit 1
+        ;;
+      *)
+        echo -en "."
+        ;;
+    esac
+  done
+}
+
+
+function start {
+  pid=$(get_pid)
+  if ps -p $pid > /dev/null; then
+    echo "PID ${pid} is already running."
+  else
+    if 
+      sudo -u rachel nohup /usr/local/bin/pdfprintd >/dev/null 2>&1 &
+    then
+      pid=$!
+      set_pid $pid
+      echo "PID ${pid} is started."
+    else
+      echo "pdfprintd was not started."
+    fi
+  fi
+}
+
+
+function set_pid {
+  echo $1 > $PIDFILE
+}
+
+
+function get_pid {
+  if test -e $PIDFILE; then
+    grep -E '^[0-9]+$' $PIDFILE | head -n 1
+  else
+    return 1
+  fi
+}
+
 
 case "${1}" in
   'status')
-    ssd -T
+    status
     ;;
   'stop')
-    ssd -K
+    stop
     ;;
   'start') 
-    ssd -b -S
+    start
     ;;
   'restart')
-    ssd -K
-    ssd -b -S
+    stop && start
     ;;
   '*')
     echo "Valid sub-commands are:  status stop start restart"

@@ -12,6 +12,11 @@ function main {
       target="${location}${file}"
       if output=$(lp "${target}" 2>&1); then
         log "Printed:  ${target}"
+        if cat "${target}" > /var/log/printed_last.pdf; then
+          log "Copied:  ${target} to /var/log/printed_last.pdf"
+        else
+          log "ERROR:  Failed to copy:  ${target} to /var/log/printed_last.pdf"
+        fi
         if output=$(rm "${target}" 2>&1); then
           log "Removed:  ${target}"
         else
