@@ -5,10 +5,10 @@ install_packages:
   # for automatic discovery, aka browsing
   - 'avahi-daemon'
 install_package_files:
-  - src:                "../sensitive_ansible/roles/nethack/files/packages/hll2300dcupswrapper-3.2.0-1.i386.deb"
-    name:               'something'
   - src:                "../sensitive_ansible/roles/nethack/files/packages/hll2300dlpr-3.2.0-1.i386.deb"
-    name:               'something'
+    name:               'hll2300dlpr:i386'
+  - src:                "../sensitive_ansible/roles/nethack/files/packages/hll2300dcupswrapper-3.2.0-1.i386.deb"
+    name:               'hll2300dcupswrapper:i386'
 create_files:
   - owner:              'rachel'
     group:              'root'
