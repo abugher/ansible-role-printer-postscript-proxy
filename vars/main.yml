@@ -6,10 +6,23 @@ install_packages:
   - 'avahi-daemon'
   - 'lib32stdc++6'
 install_package_files:
-  - src:                "../sensitive_ansible/roles/nethack/files/packages/hll2300dlpr-3.2.0-1.i386.deb"
+  - src:                "../../../sensitive_ansible/roles/printer_postscript_proxy/files/packages/hll2300dlpr-3.2.0-1.i386.deb"
     name:               'hll2300dlpr:i386'
-  - src:                "../sensitive_ansible/roles/nethack/files/packages/hll2300dcupswrapper-3.2.0-1.i386.deb"
+  - src:                "../../../sensitive_ansible/roles/printer_postscript_proxy/files/packages/hll2300dcupswrapper-3.2.0-1.i386.deb"
     name:               'hll2300dcupswrapper:i386'
+commands:
+  - command:            lpadmin -d HLL2300D
+    user:               'root'
+    chdir:              '/'
+    creates:            '/not_applicable'
+  - command:            lpadmin -p printer -v cups-pdf:/ -E
+    user:               'root'
+    chdir:              '/'
+    creates:            '/not_applicable'
+  - command:            lpadmin -p printer -o printer-is-shared=true
+    user:               'root'
+    chdir:              '/'
+    creates:            '/not_applicable'
 create_files:
   - owner:              'rachel'
     group:              'root'
