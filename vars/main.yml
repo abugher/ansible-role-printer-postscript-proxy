@@ -14,15 +14,18 @@ commands:
   - command:            lpadmin -d HLL2300D
     user:               'root'
     chdir:              '/'
-    creates:            '/not_applicable'
+    # changed_when:     false
+    creates:            '/dev/null'
   - command:            lpadmin -p printer -v cups-pdf:/ -E
     user:               'root'
     chdir:              '/'
-    creates:            '/not_applicable'
+    # changed_when:     false
+    creates:            '/dev/null'
   - command:            lpadmin -p printer -o printer-is-shared=true
     user:               'root'
     chdir:              '/'
-    creates:            '/not_applicable'
+    # changed_when:     false
+    creates:            '/dev/null'
 create_files:
   - owner:              'rachel'
     group:              'root'
