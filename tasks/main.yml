@@ -1,8 +1,7 @@
 ---
 - include:              '../tasks/install_packages.yml'
 - include:              '../tasks/install_package_files.yml'
-- include:              '../tasks/commands.yml'
-  when:                 install_packages_result.changed or install_package_files_result.changed
+- include:              '../tasks/shell_commands_ignore_result.yml'
 - include:              '../tasks/create_files.yml'
 - include:              '../tasks/initialize_files.yml'
 - include:              '../tasks/template_files.yml'
