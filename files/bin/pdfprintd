@@ -8,30 +8,31 @@ function main {
     -m \
     -e CLOSE_WRITE \
     -r /usr/local/share/print_target \
-    | while read location events file; do 
-      target="${location}${file}"
-      if output=$(lp "${target}" 2>&1); then
-        log "Printed:  ${target}"
-        if cat "${target}" > /var/log/printed_last.pdf; then
-          log "Copied:  ${target} to /var/log/printed_last.pdf"
-        else
-          log "ERROR:  Failed to copy:  ${target} to /var/log/printed_last.pdf"
-        fi
-        if output=$(rm "${target}" 2>&1); then
-          log "Removed:  ${target}"
-        else
-          log "ERROR:  Failed to remove:  ${target}"
-          log "ERROR:  rm ${target}"
-          log "${output}"
-        fi
+  | while read location events file; do 
+    target="${location}${file}"
+    sleep 5 # The file appears with 0600, then gets 0664.  Wait for it.
+    if output=$(lp "${target}" 2>&1); then
+      log "Printed:  ${target}"
+      if cat "${target}" > /var/log/printed_last.pdf; then
+        log "Copied:  ${target} to /var/log/printed_last.pdf"
       else
-        log "ERROR:  Failed to print:  ${target}"
-        log "ERROR:  lp ${target}"
-        log "DEBUG:  $(ls -l ${target})"
+        log "ERROR:  Failed to copy:  ${target} to /var/log/printed_last.pdf"
+      fi
+      if output=$(rm "${target}" 2>&1); then
+        log "Removed:  ${target}"
+      else
+        log "ERROR:  Failed to remove:  ${target}"
+        log "ERROR:  rm ${target}"
         log "${output}"
       fi
-      
-    done
+    else
+      log "ERROR:  Failed to print:  ${target}"
+      log "ERROR:  lp ${target}"
+      log "DEBUG:  $(ls -l ${target})"
+      log "${output}"
+    fi
+    
+  done
 }
 
 
