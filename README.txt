@@ -10,3 +10,7 @@ which is the physical printer.
 
 CUPS may have a simpler way to expose printers to the network without
 requiring hardware-specific drivers, these days.
+
+The printer is required to be plugged in, turned on, and awake at
+deployment time.  If possible, it would be better to wake the printer as
+an automated deployment step.
