@@ -3,7 +3,6 @@
 - include:              '../tasks/install_package_files.yml'
 - include:              '../tasks/shell_commands_ignore_result.yml'
 - include:              '../tasks/create_files.yml'
-- include:              '../tasks/initialize_files.yml'
 - include:              '../tasks/template_files.yml'
 - include:              '../tasks/install_files.yml'
 - include:              '../tasks/symlinks.yml'
