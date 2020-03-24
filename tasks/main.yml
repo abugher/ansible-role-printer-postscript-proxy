@@ -6,6 +6,13 @@
 - include:              '../tasks/template_files.yml'
 - include:              '../tasks/install_files.yml'
 - include:              '../tasks/symlinks.yml'
+- lineinfile:
+    state:              'present'
+    line:               '  /usr/local/share/print_target/** rw,'
+    regexp:             '/usr/local/share/print_target/'
+    insertafter:        '/var/spool/cups-pdf/'
+    dest:               '/etc/apparmor.d/usr.sbin.cupsd'
+  register:             apparmor_result
 - include:              '../tasks/restart_services.yml'
   when:                 install_packages_result.changed
                         or install_package_files_result.changed
@@ -13,5 +20,6 @@
                         or template_files_result.changed
                         or install_files_result.changed 
                         or symlinks_result.changed
+                        or apparmor_result.changed
 - include:              '../tasks/enable_services.yml'
 - include:              '../tasks/start_services.yml'
