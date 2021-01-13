@@ -29,6 +29,21 @@ shell_commands_ignore_result:
   - command:            lpadmin -p printer -o printer-is-shared=true
     user:               'root'
     chdir:              '/'
+  - command:            lpadmin -p HLL2300D -o PageSize=Letter
+    user:               'root'
+    chdir:              '/'
+  - command:            lpadmin -p printer -o PageSize=Letter
+    user:               'root'
+    chdir:              '/'
+  # Doing this with lpoptions may be either redundant to doing it with lpadmin
+  # (above) or just unnecessary, but should not cause harm, and will cause
+  # `lpoptions -l` to be consistent with lpadmin and CUPS web interface output.
+  - command:            lpoptions -p HLL2300D -o PageSize=Letter
+    user:               'root'
+    chdir:              '/'
+  - command:            lpoptions -p printer -o PageSize=Letter
+    user:               'root'
+    chdir:              '/'
 create_files:
   - owner:              'rachel'
     group:              'root'
