@@ -94,3 +94,5 @@ restart_services:
   - 'cups'
   - 'pdfprint'
   - 'apparmor'
+  - 'user_identity_client'
+  - 'ssl_identity'
