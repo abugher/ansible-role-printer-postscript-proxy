@@ -95,4 +95,3 @@ restart_services:
   - 'pdfprint'
   - 'apparmor'
   - 'user_identity_client'
-  - 'ssl_identity'
