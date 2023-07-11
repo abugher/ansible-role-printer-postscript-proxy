@@ -6,9 +6,9 @@ install_packages:
   - 'avahi-daemon'
   - 'lib32stdc++6'
 install_package_files:
-  - src:                "../../../sensitive-ansible/roles/printer_postscript_proxy/files/packages/hll2300dlpr-3.2.0-1.i386.deb"
+  - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dlpr-3.2.0-1.i386.deb"
     name:               'hll2300dlpr:i386'
-  - src:                "../../../sensitive-ansible/roles/printer_postscript_proxy/files/packages/hll2300dcupswrapper-3.2.0-1.i386.deb"
+  - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dcupswrapper-3.2.0-1.i386.deb"
     name:               'hll2300dcupswrapper:i386'
 shell_commands_ignore_result:
   - command:            lpadmin -p HLL2300D -E -v $(/usr/sbin/lpinfo -v | grep 'usb:\/\/.*Brother.*HL-L2300D' | sed -E 's/^[^\s]*\s+//') -P /usr/share/cups/model/brother-HLL2300D-cups-en.ppd
