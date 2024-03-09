@@ -1,11 +1,11 @@
 ---
-- include:              '../tasks/install_packages.yml'
-- include:              '../tasks/install_package_files.yml'
-- include:              '../tasks/shell_commands_ignore_result.yml'
-- include:              '../tasks/create_files.yml'
-- include:              '../tasks/template_files.yml'
-- include:              '../tasks/install_files.yml'
-- include:              '../tasks/symlinks.yml'
+- include_tasks:        '../tasks/install_packages.yml'
+- include_tasks:        '../tasks/install_package_files.yml'
+- include_tasks:        '../tasks/shell_commands_ignore_result.yml'
+- include_tasks:        '../tasks/create_files.yml'
+- include_tasks:        '../tasks/template_files.yml'
+- include_tasks:        '../tasks/install_files.yml'
+- include_tasks:        '../tasks/symlinks.yml'
 - lineinfile:
     state:              'present'
     line:               '  /usr/local/share/print_target/** rw,'
@@ -13,7 +13,7 @@
     insertafter:        '/var/spool/cups-pdf/'
     dest:               '/etc/apparmor.d/usr.sbin.cupsd'
   register:             apparmor_result
-- include:              '../tasks/restart_services.yml'
+- include_tasks:        '../tasks/restart_services.yml'
   when:                 install_packages_result.changed
                         or install_package_files_result.changed
                         or create_files_result.changed
@@ -21,5 +21,5 @@
                         or install_files_result.changed 
                         or symlinks_result.changed
                         or apparmor_result.changed
-- include:              '../tasks/enable_services.yml'
-- include:              '../tasks/start_services.yml'
+- include_tasks:        '../tasks/enable_services.yml'
+- include_tasks:        '../tasks/start_services.yml'
