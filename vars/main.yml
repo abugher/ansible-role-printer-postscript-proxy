@@ -10,7 +10,7 @@ install_package_files:
     name:               'hll2300dlpr:i386'
   - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dcupswrapper-3.2.0-1.i386.deb"
     name:               'hll2300dcupswrapper:i386'
-shell_commands_ignore_result:
+shell_commands_ignore_change:
   - command:            lpadmin -p HLL2300D -E -v $(/usr/sbin/lpinfo -v | grep 'usb:\/\/.*Brother.*HL-L2300D' | sed -E 's/^[^\s]*\s+//') -P /usr/share/cups/model/brother-HLL2300D-cups-en.ppd
     user:               'root'
     chdir:              '/'
