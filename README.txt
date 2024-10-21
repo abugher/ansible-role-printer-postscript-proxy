@@ -14,3 +14,12 @@ requiring hardware-specific drivers, these days.
 The printer is required to be plugged in, turned on, and awake at
 deployment time.  If possible, it would be better to wake the printer as
 an automated deployment step.
+
+Add a new printer to the client system, set the make/model to
+generic/postscript, and set the URI like so:
+
+  ipp://printer.neuronpointer.net/printers/printer
+
+... or just:
+
+  ipp://printer/printers/printer
