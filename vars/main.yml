@@ -8,8 +8,6 @@ install_packages:
   - 'printer-driver-cups-pdf'
   # for automatic discovery, aka browsing
   - 'avahi-daemon'
-#  - 'lib32stdc++6'
-  - 'libc6:i386'
 install_package_files:
   - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dlpr-3.2.0-1.deb"
     name:               'hll2300dlpr'

@@ -25,8 +25,14 @@ generic/postscript, and set the URI like so:
     ipp://printer/printers/printer
 
 
-Steps similar to these were used to make adjustments to the driver
-packages:
+The driver packages for my printer are available from here:
+
+    https://support.brother.com/g/b/downloadlist.aspx?c=us_ot&lang=en&prod=hll2300d_us_eu_as&os=128
+
+One package includes some executable files compiled for i386 architecture.  I
+adjusted the package to depend on `qemu-user` and `libc6:i386` and changed both
+packages to declare compatibility with all architectures, using commands
+similar to this set:
 
     cd tmp
     rm -rf *
@@ -42,7 +48,7 @@ packages:
         ln -s /usr/local/bin/qemu-i386-wrapper "${path}"
       done
     done
-    echo "Depends: qemu-user" >> hll2300dlpr-3.2.0-1/DEBIAN/control
+    echo "Depends: qemu-user, libc6:i386" >> hll2300dlpr-3.2.0-1/DEBIAN/control
     mkdir -p hll2300dlpr-3.2.0-1/usr/local/bin
     echo -e "#!/bin/bash\nqemu-i386 '${0}_real' \"\${@}\"" > hll2300dlpr-3.2.0-1/usr/local/bin/qemu-i386-wrapper
     chmod 0755 hll2300dlpr-3.2.0-1/usr/local/bin/qemu-i386-wrapper
@@ -52,3 +58,4 @@ packages:
       dpkg-deb --root-owner-group -b "${dir}" "${newdeb}"
     done
 
+This works on `armhf` architecture.
