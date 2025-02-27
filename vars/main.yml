@@ -1,56 +1,27 @@
 ---
+user_groups:
+  - 'pdfprintd'
+users:
+  - 'pdfprintd'
 install_packages:
   - 'inotify-tools'
   - 'printer-driver-cups-pdf'
   # for automatic discovery, aka browsing
   - 'avahi-daemon'
-  - 'lib32stdc++6'
+#  - 'lib32stdc++6'
+  - 'libc6:i386'
 install_package_files:
-  - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dlpr-3.2.0-1.i386.deb"
-    name:               'hll2300dlpr:i386'
-  - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dcupswrapper-3.2.0-1.i386.deb"
-    name:               'hll2300dcupswrapper:i386'
-shell_commands_ignore_change:
-  - command:            lpadmin -p HLL2300D -E -v $(/usr/sbin/lpinfo -v | grep 'usb:\/\/.*Brother.*HL-L2300D' | sed -E 's/^[^\s]*\s+//') -P /usr/share/cups/model/brother-HLL2300D-cups-en.ppd
-    user:               'root'
-    chdir:              '/'
-  - command:            /opt/brother/Printers/HLL2300D/inf/setupPrintcap HLL2300D -i USB
-    user:               'root'
-    chdir:              '/'
-  - command:            /opt/brother/Printers/HLL2300D/inf/braddprinter -i HLL2300D
-    user:               'root'
-    chdir:              '/'
-  - command:            lpadmin -d HLL2300D
-    user:               'root'
-    chdir:              '/'
-  - command:            lpadmin -p printer -v cups-pdf:/ -E
-    user:               'root'
-    chdir:              '/'
-  - command:            lpadmin -p printer -o printer-is-shared=true
-    user:               'root'
-    chdir:              '/'
-  - command:            lpadmin -p HLL2300D -o PageSize=Letter
-    user:               'root'
-    chdir:              '/'
-  - command:            lpadmin -p printer -o PageSize=Letter
-    user:               'root'
-    chdir:              '/'
-  # Doing this with lpoptions may be either redundant to doing it with lpadmin
-  # (above) or just unnecessary, but should not cause harm, and will cause
-  # `lpoptions -l` to be consistent with lpadmin and CUPS web interface output.
-  - command:            lpoptions -p HLL2300D -o PageSize=Letter
-    user:               'root'
-    chdir:              '/'
-  - command:            lpoptions -p printer -o PageSize=Letter
-    user:               'root'
-    chdir:              '/'
+  - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dlpr-3.2.0-1.deb"
+    name:               'hll2300dlpr'
+  - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dcupswrapper-3.2.0-1.deb"
+    name:               'hll2300dcupswrapper'
 create_files:
-  - owner:              'rachel'
+  - owner:              'pdfprintd'
     group:              'root'
     mode:               '1777'
     state:              'directory'
     path:               '/usr/local/share/print_target'
-  - owner:              'rachel'
+  - owner:              'pdfprintd'
     group:              'root'
     mode:               '0644'
     state:              'touch'
@@ -86,12 +57,47 @@ symlinks:
     group:              'root'
     src:                '/etc/ssl/certs/meliora.pem'
     dest:               '/etc/cups/ssl/meliora.crt'
-enable_services:
-  - 'pdfprint'
-start_services:
-  - 'pdfprint'
 restart_services:
   - 'cups'
   - 'pdfprint'
-  - 'apparmor'
-  - 'user_identity_client'
+enable_services:
+  - 'cups'
+  - 'pdfprint'
+start_services:
+  - 'cups'
+  - 'pdfprint'
+shell_commands_ignore_change:
+  - command:            lpadmin -p HLL2300D -E -v $(/usr/sbin/lpinfo -v | grep 'usb:\/\/.*Brother.*HL-L2300D' | sed -E 's/^[^\s]*\s+//') -P /usr/share/cups/model/brother-HLL2300D-cups-en.ppd
+    user:               'root'
+    chdir:              '/'
+  - command:            /opt/brother/Printers/HLL2300D/inf/setupPrintcap HLL2300D -i USB
+    user:               'root'
+    chdir:              '/'
+  - command:            /opt/brother/Printers/HLL2300D/inf/braddprinter -i HLL2300D
+    user:               'root'
+    chdir:              '/'
+  - command:            lpadmin -d HLL2300D
+    user:               'root'
+    chdir:              '/'
+  - command:            lpadmin -p printer -v cups-pdf:/ -E
+    user:               'root'
+    chdir:              '/'
+  - command:            lpadmin -p printer -o printer-is-shared=true
+    user:               'root'
+    chdir:              '/'
+  - command:            lpadmin -p HLL2300D -o PageSize=Letter
+    user:               'root'
+    chdir:              '/'
+  - command:            lpadmin -p printer -o PageSize=Letter
+    user:               'root'
+    chdir:              '/'
+  # Doing this with lpoptions may be either redundant to doing it with lpadmin
+  # (above) or just unnecessary, but should not cause harm, and will cause
+  # `lpoptions -l` to be consistent with lpadmin and CUPS web interface output.
+  - command:            lpoptions -p HLL2300D -o PageSize=Letter
+    user:               'root'
+    chdir:              '/'
+  - command:            lpoptions -p printer -o PageSize=Letter
+    user:               'root'
+    chdir:              '/'
+

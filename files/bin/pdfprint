@@ -15,25 +15,32 @@ PIDFILE=/run/pdfprintd.pid
 
 
 function status {
-  pid=$(get_pid)
-  if ps -p $pid > /dev/null; then
+  pid="$(get_pid)"
+  if check_pid "${pid}" > /dev/null; then
     echo "PID ${pid} is running."
+    return 0
   else
     if test "" == "${pid}"; then
       echo "pdfprintd is not running."
+      return 3
     else
       echo "PID ${pid} is recorded, but not running."
+      return 1
     fi
   fi
 }
 
 
 function stop {
-  pid=$(get_pid | head -n 1)
+  pid="$(get_pid | head -n 1)"
+  if test '' = "${pid}"; then
+    echo "No PID recorded."
+    return 0
+  fi
   echo "Killing PID ${pid}."
-  kill $pid
+  kill "${pid}"
   for i in {0..9}; do
-    if ! ps -p $pid > /dev/null; then
+    if ! check_pid "${pid}" > /dev/null; then
       echo "PID ${pid} is dead."
       break
     fi
@@ -51,7 +58,7 @@ function stop {
     esac
   done
 
-  if ps -p $pid > /dev/null; then
+  if check_pid "${pid}" > /dev/null; then
     echo "PID ${pid} is not stopped."
   else
     echo "PID ${pid} is stopped."
@@ -62,6 +69,7 @@ function stop {
   for i in {0..9}; do
     if ! pgrep -x pdfprintd > /dev/null; then
       echo "pdfprintd is dead."
+      clear_pid
       break
     fi
     case i in
@@ -81,15 +89,15 @@ function stop {
 
 
 function start {
-  pid=$(get_pid)
-  if ps -p $pid > /dev/null; then
+  pid="$(get_pid)"
+  if ! test '' = "${pid}" && check_pid "${pid}" > /dev/null; then
     echo "PID ${pid} is already running."
   else
     if 
-      sudo -u rachel nohup /usr/local/bin/pdfprintd >/dev/null 2>&1 &
+      sudo -u pdfprintd nohup /usr/local/bin/pdfprintd >/dev/null 2>&1 &
     then
-      pid=$!
-      set_pid $pid
+      pid="${!}"
+      set_pid "${pid}"
       echo "PID ${pid} is started."
     else
       echo "pdfprintd was not started."
@@ -109,6 +117,17 @@ function get_pid {
   else
     return 1
   fi
+}
+
+
+function clear_pid {
+  rm $PIDFILE
+}
+
+
+function check_pid {
+  pid="${1}"
+  ps -p "${pid}" >/dev/null 2>&1
 }
 
 

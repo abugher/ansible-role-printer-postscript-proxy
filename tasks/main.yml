@@ -1,7 +1,9 @@
 ---
+- include_tasks:        '../tasks/user_groups.yml'
+- include_tasks:        '../tasks/users.yml'
+- include_tasks:        '../tasks/dpkg_i386_architecture.yml'
 - include_tasks:        '../tasks/install_packages.yml'
 - include_tasks:        '../tasks/install_package_files.yml'
-- include_tasks:        '../tasks/shell_commands_ignore_change.yml'
 - include_tasks:        '../tasks/create_files.yml'
 - include_tasks:        '../tasks/template_files.yml'
 - include_tasks:        '../tasks/install_files.yml'
@@ -23,3 +25,4 @@
                         or apparmor_result.changed
 - include_tasks:        '../tasks/enable_services.yml'
 - include_tasks:        '../tasks/start_services.yml'
+- include_tasks:        '../tasks/shell_commands_ignore_change.yml'
