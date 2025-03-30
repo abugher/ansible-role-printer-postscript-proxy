@@ -83,6 +83,9 @@ shell_commands_ignore_change:
   - command:            lpadmin -p printer -o printer-is-shared=true
     user:               'root'
     chdir:              '/'
+  - command:            lpadmin -p HLL2300D -o printer-is-shared=false
+    user:               'root'
+    chdir:              '/'
   - command:            lpadmin -p HLL2300D -o PageSize=Letter
     user:               'root'
     chdir:              '/'
