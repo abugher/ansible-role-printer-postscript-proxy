@@ -9,9 +9,9 @@ install_packages:
   # for automatic discovery, aka browsing
   - 'avahi-daemon'
 install_package_files:
-  - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dlpr-3.2.0-1.deb"
+  - src:                "sensitive/files/packages/hll2300dlpr-3.2.0-1.deb"
     name:               'hll2300dlpr'
-  - src:                "../../../sensitive-ansible/roles/printer-postscript-proxy/files/packages/hll2300dcupswrapper-3.2.0-1.deb"
+  - src:                "sensitive/files/packages/hll2300dcupswrapper-3.2.0-1.deb"
     name:               'hll2300dcupswrapper'
 create_files:
   - owner:              'pdfprintd'

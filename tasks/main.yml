@@ -1,13 +1,13 @@
 ---
-- include_tasks:        '../tasks/user_groups.yml'
-- include_tasks:        '../tasks/users.yml'
-- include_tasks:        '../tasks/dpkg_i386_architecture.yml'
-- include_tasks:        '../tasks/install_packages.yml'
-- include_tasks:        '../tasks/install_package_files.yml'
-- include_tasks:        '../tasks/create_files.yml'
-- include_tasks:        '../tasks/template_files.yml'
-- include_tasks:        '../tasks/install_files.yml'
-- include_tasks:        '../tasks/symlinks.yml'
+- include_tasks:        'tasks/common/user_groups.yml'
+- include_tasks:        'tasks/common/users.yml'
+- include_tasks:        'tasks/common/dpkg_i386_architecture.yml'
+- include_tasks:        'tasks/common/install_packages.yml'
+- include_tasks:        'tasks/common/install_package_files.yml'
+- include_tasks:        'tasks/common/create_files.yml'
+- include_tasks:        'tasks/common/template_files.yml'
+- include_tasks:        'tasks/common/install_files.yml'
+- include_tasks:        'tasks/common/symlinks.yml'
 - lineinfile:
     state:              'present'
     line:               '  /usr/local/share/print_target/** rw,'
@@ -15,7 +15,7 @@
     insertafter:        '/var/spool/cups-pdf/'
     dest:               '/etc/apparmor.d/usr.sbin.cupsd'
   register:             apparmor_result
-- include_tasks:        '../tasks/restart_services.yml'
+- include_tasks:        'tasks/common/restart_services.yml'
   when:                 install_packages_result.changed
                         or install_package_files_result.changed
                         or create_files_result.changed
@@ -23,6 +23,6 @@
                         or install_files_result.changed 
                         or symlinks_result.changed
                         or apparmor_result.changed
-- include_tasks:        '../tasks/enable_services.yml'
-- include_tasks:        '../tasks/start_services.yml'
-- include_tasks:        '../tasks/shell_commands_ignore_change.yml'
+- include_tasks:        'tasks/common/enable_services.yml'
+- include_tasks:        'tasks/common/start_services.yml'
+- include_tasks:        'tasks/common/shell_commands_ignore_change.yml'
