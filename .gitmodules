@@ -1,9 +1,6 @@
 [submodule "tasks/common"]
 	path = tasks/common
 	url = https://github.com/abugher/ansible-common-tasks.git
-[submodule "environment"]
-	path = environment
-	url = https://github.com/abugher/ansible-environment.git
 [submodule "sensitive"]
 	path = sensitive
 	url = ansible@files:/storage/control-center/sensitive-ansible-role-printer-postscript-proxy.git
